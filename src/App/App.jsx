@@ -8,6 +8,7 @@ import { HomePage } from "@/HomePage";
 import { AdminPage } from "@/AdminPage";
 import { LoginPage } from "@/LoginPage";
 
+import "bulma/css/bulma.css";
 import "./App.css";
 
 class App extends React.Component {
