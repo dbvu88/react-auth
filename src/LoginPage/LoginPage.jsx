@@ -7,6 +7,7 @@ import { authenticationService } from "../_services";
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     if (authenticationService.currentUserValue) {
       this.props.history.push("/");
     }
@@ -16,7 +17,7 @@ class LoginPage extends React.Component {
     setStatus();
     authenticationService.login(username, password).then(
       user => {
-        const { from } = (this.props && this.props.location.state) || {
+        const { from } = this.props.location.state || {
           from: {
             pathname: "/"
           }
