@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bulma": "^0.7.5",
     "formik": "^1.5.7",
     "history": "^4.9.0",
     "react": "^16.8.6",
