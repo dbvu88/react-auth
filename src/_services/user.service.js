@@ -1,23 +1,14 @@
 import config from 'config'
 import {
-    authHeader,
-    handleResponse
+    fetcher
 } from '@/_helpers'
 
 const getAll = () => {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    }
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse)
+    return fetcher.get(`${config.apiUrl}/users`)
 }
 
 const getById = id => {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    }
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse)
+    return fetcher.get(`${config.apiUrl}/users/${id}`)
 }
 
 export const userService = {
