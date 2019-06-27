@@ -6,8 +6,8 @@ class AdminPage extends React.Component {
   constructor(props) {
     super(props);
 
-    this.setState = {
-      user: null
+    this.state = {
+      users: null
     };
   }
 
@@ -16,7 +16,7 @@ class AdminPage extends React.Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { users } = this.state;
 
     return (
       <div>

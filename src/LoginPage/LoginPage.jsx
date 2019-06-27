@@ -7,32 +7,14 @@ import { authenticationService } from "../_services";
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
     if (authenticationService.currentUserValue) {
       this.props.history.push("/");
     }
   }
 
-  onSubmit({ username, password }, { setStatus, setSubmitting }) {
-    setStatus();
-    authenticationService.login(username, password).then(
-      user => {
-        const { from } = this.props.location.state || {
-          from: {
-            pathname: "/"
-          }
-        };
-
-        this.props.history.push(from);
-      },
-      error => {
-        setStatus(error);
-        setSubmitting(false);
-      }
-    );
-  }
-
   render() {
+    // console.log(this.props);
     return (
       <div className="hero-body">
         <div className="container">
@@ -40,9 +22,31 @@ class LoginPage extends React.Component {
             <div className="column is-5-tablet is-4-desktop is-3-widescreen">
               <h1 className="title">Welcome Back!</h1>
               <Formik
+                props={this.props}
                 initialValues={handleLogin.initialValues}
                 validationSchema={handleLogin.validationSchema}
-                onSubmit={this.onSubmit}
+                onSubmit={(
+                  { username, password },
+                  { setStatus, setSubmitting }
+                ) => {
+                  setStatus();
+                  authenticationService.login(username, password).then(
+                    user => {
+                      // const { from } = this.props.location.state || {
+                      //   from: {
+                      //     pathname: "/"
+                      //   }
+                      // };
+
+                      // this.props.history.push(from);
+                      console.log(user);
+                    },
+                    error => {
+                      setStatus(error);
+                      setSubmitting(false);
+                    }
+                  );
+                }}
                 render={({ values, errors, status, touched, isSubmitting }) => (
                   <Form className="box">
                     <div className="field">

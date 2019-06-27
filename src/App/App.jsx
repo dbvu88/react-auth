@@ -3,7 +3,7 @@ import { Router, Route, Link } from "react-router-dom";
 
 import { history, Role } from "@/_helpers";
 import { authenticationService } from "@/_services";
-import { PrivateRoute } from "@/_components";
+import { ProtectedRoute } from "@/_components";
 import { HomePage } from "@/HomePage";
 import { AdminPage } from "@/AdminPage";
 import { LoginPage } from "@/LoginPage";
@@ -48,8 +48,8 @@ class App extends React.Component {
             </nav>
           )}
           <div>
-            <PrivateRoute exact path="/" component={HomePage} />
-            <PrivateRoute
+            <ProtectedRoute exact path="/" component={HomePage} />
+            <ProtectedRoute
               path="/admin"
               roles={Role.Admin}
               component={AdminPage}
