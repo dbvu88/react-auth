@@ -1,60 +1,118 @@
 import React from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-
-import * as Yup from "yup";
+import { Formik, Field as Input, Form, ErrorMessage } from "formik";
+import { handleLogin } from "@/_helpers";
 
 import { authenticationService } from "../_services";
 
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
-
     if (authenticationService.currentUserValue) {
       this.props.history.push("/");
     }
   }
 
+  onSubmit({ username, password }, { setStatus, setSubmitting }) {
+    setStatus();
+    authenticationService.login(username, password).then(
+      user => {
+        const { from } = (this.props && this.props.location.state) || {
+          from: {
+            pathname: "/"
+          }
+        };
+
+        this.props.history.push(from);
+      },
+      error => {
+        setStatus(error);
+        setSubmitting(false);
+      }
+    );
+  }
+
   render() {
     return (
-      <div>
-        <div>
-          <strong>Normal User</strong> - U: user P: user
-          <br />
-          <strong>Administrator</strong> - U: admin P:admin
-        </div>
-        <h2>Login</h2>
-        <Formik
-          initialValues={{
-            username: "",
-            password: ""
-          }}
-          validationSchema={Yup.object().shape({
-            username: Yup.string().required("username is required"),
-            password: Yup.string().required("password is required")
-          })}
-          onSubmit={({ username, password }, { setStatus, setSubmitting }) => {
-            setStatus();
-            authenticationService.login(username, password).then(user => {
-              const { from } = this.props.location.state || {
-                from: { pathname: "/" }
-              };
+      <div className="hero-body">
+        <div className="container">
+          <div className="columns is-centered">
+            <div className="column is-5-tablet is-4-desktop is-3-widescreen">
+              <h1 className="title">Welcome Back!</h1>
+              <Formik
+                initialValues={handleLogin.initialValues}
+                validationSchema={handleLogin.validationSchema}
+                onSubmit={this.onSubmit}
+                render={({ values, errors, status, touched, isSubmitting }) => (
+                  <Form className="box">
+                    <div className="field">
+                      <label className="label" htmlFor="username">
+                        Username
+                      </label>
 
-              this.props.history.push(from);
-            });
-          }}
-          render={() => (
-            <Form>
-              <div className="row">
-                <div className="input-field col s12">
-                  <Field className="validate" name="username" type="text" />
-                  <ErrorMessage name="username" component="div" />
-                </div>
-              </div>
-              <Field name="password" type="text" />
-              <ErrorMessage name="password" component="div" />
-            </Form>
-          )}
-        />
+                      <Input
+                        className={handleLogin.getInputClassName(
+                          "input",
+                          values.username,
+                          errors.username,
+                          touched
+                        )}
+                        placeholder="username"
+                        name="username"
+                        type="text"
+                      />
+                      <ErrorMessage
+                        className={handleLogin.getInputClassName(
+                          "help",
+                          values.username,
+                          errors.username,
+                          touched
+                        )}
+                        name="username"
+                        component="div"
+                      />
+                    </div>
+                    <div className="field">
+                      <label className="label" htmlFor="password">
+                        Password
+                      </label>
+                      <Input
+                        className={handleLogin.getInputClassName(
+                          "input",
+                          values.password,
+                          errors.password,
+                          touched
+                        )}
+                        name="password"
+                        type="password"
+                        placeholder="password"
+                      />
+                      <ErrorMessage
+                        className={handleLogin.getInputClassName(
+                          "help",
+                          values.password,
+                          errors.password,
+                          touched
+                        )}
+                        name="password"
+                        component="div"
+                      />
+                    </div>
+                    <div className="field">
+                      <button
+                        className="button is-success"
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
+                        Login
+                      </button>
+                    </div>
+                    {status && <div className={"help is-danger"}>{status}</div>}
+                  </Form>
+                )}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
