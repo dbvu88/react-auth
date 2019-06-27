@@ -8,16 +8,16 @@ const initialValues = {
     password: ""
 }
 
-const getInputClassName = (type, value, error, touched) => {
-    let classname = null;
+const getInputClassName = (classname, value, error, touched) => {
+    let modifier = null;
 
     if (value && touched && !error) {
-        classname = "is-success";
+        modifier = "is-success";
     } else {
-        classname = "is-danger";
+        modifier = "is-danger";
     }
 
-    return type + " " + classname;
+    return classname + " " + modifier;
 }
 
 

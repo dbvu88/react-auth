@@ -39,23 +39,69 @@ class App extends React.Component {
     const { currentUser, isAdmin } = this.state;
     return (
       <Router history={history}>
-        <div>
+        <div className="hero-head">
           {currentUser && (
-            <nav className="navbar">
-              <Link to="/">Home</Link>
-              {isAdmin && <Link to="/admin">Admin</Link>}
-              <button onClick={this.logout}>Logout</button>
+            <nav
+              className="navbar is-primary"
+              role="navigation"
+              aria-label="main navigation"
+            >
+              <div className="container">
+                <a
+                  role="button"
+                  className="navbar-burger burger"
+                  aria-label="menu"
+                  aria-expanded="false"
+                  data-target="navMenu"
+                  onClick={() => {
+                    document
+                      .querySelector(".navbar-burger")
+                      .classList.toggle("is-active");
+                    document
+                      .querySelector(".navbar-menu")
+                      .classList.toggle("is-active");
+                  }}
+                >
+                  <span aria-hidden="true" />
+                  <span aria-hidden="true" />
+                  <span aria-hidden="true" />
+                </a>
+
+                <div id="navMenu" className="navbar-menu is-active">
+                  <div className="navbar-start">
+                    <Link className="navbar-item" to="/">
+                      Home
+                    </Link>
+                    {isAdmin && (
+                      <Link className="navbar-item" to="/admin">
+                        Admin
+                      </Link>
+                    )}
+                  </div>
+                  <div className="navbar-end">
+                    <div className="navbar-item">
+                      <button
+                        className="button is-primary is-inverted"
+                        onClick={this.logout}
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </nav>
           )}
-          <div>
-            <ProtectedRoute exact path="/" component={HomePage} />
-            <ProtectedRoute
-              path="/admin"
-              roles={Role.Admin}
-              component={AdminPage}
-            />
-            <Route path="/login" component={LoginPage} />
-          </div>
+        </div>
+
+        <div className="hero-body">
+          <ProtectedRoute exact path="/" component={HomePage} />
+          <ProtectedRoute
+            path="/admin"
+            roles={Role.Admin}
+            component={AdminPage}
+          />
+          <Route path="/login" component={LoginPage} />
         </div>
       </Router>
     );
